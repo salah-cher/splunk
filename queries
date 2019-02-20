@@ -1,0 +1,13 @@
+host="srv_prod_info_epp_1" source="/opt/OXRS_Epp/03222016.log" ERROR | stats count by ERROR
+
+error |  top limit=1 error
+
+*| dedup uid
+
+error | stats count by error | sendemail to="john@mydomain.com"
+
+create | timechart span=1d count by domainname
+
+create | top 10 registrar_name 
+
+sourcetype=registrar_queries* status=200 action=check | top limit=1 sourceip | table sourceip
